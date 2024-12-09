@@ -14,16 +14,22 @@ REMOTE_PROJECT_PATH = "/home/raj/project-geek"
 # Path to custom SSH key
 SSH_KEY_PATH = "/home/raj/.ssh/geek_ed25519"
 
+
+# For Clone from github using below command
+# f"GIT_SSH_COMMAND='ssh -i {SSH_KEY_PATH}' git clone REPO_URL",
+
+
 NON_INTERACTIVE_COMMANDS = [
-  f"cd {REMOTE_PROJECT_PATH} && ls -la",
-  f"cd {REMOTE_PROJECT_PATH} && GIT_SSH_COMMAND='ssh -i {SSH_KEY_PATH}' git pull",
-  f"cd {REMOTE_PROJECT_PATH} && ls -la",
-  f"cd {REMOTE_PROJECT_PATH} && npm install",
+    f"cd {REMOTE_PROJECT_PATH} && ls -la",
+    f"cd {REMOTE_PROJECT_PATH} && GIT_SSH_COMMAND='ssh -i {SSH_KEY_PATH}' git pull",
+    f"cd {REMOTE_PROJECT_PATH} && ls -la",
+    f"cd {REMOTE_PROJECT_PATH} && npm install",
 ]
 
 INTERACTIVE_COMMANDS = [
-  "sudo service nginx restart",
+    "sudo service nginx restart",
 ]
+
 
 def create_ssh_client(host, port, username, password):
     """
@@ -36,6 +42,7 @@ def create_ssh_client(host, port, username, password):
                        username=username, password=password)
     print("Connected successfully.")
     return ssh_client
+
 
 def execute_non_interactive_commands(ssh_client, commands):
     """
@@ -56,6 +63,7 @@ def execute_non_interactive_commands(ssh_client, commands):
         except Exception as e:
             print(f"Failed to execute command '{command}': {e}")
             raise
+
 
 def execute_interactive_commands(ssh_client, commands, sudo_password):
     """
@@ -93,6 +101,7 @@ def execute_interactive_commands(ssh_client, commands, sudo_password):
         print(f"Failed to execute interactive command '{command}': {e}")
         raise
 
+
 def main():
     """
     Purpose: Main function to handle the entire process.
@@ -105,7 +114,8 @@ def main():
         # Execure non-interactive commands
         execute_non_interactive_commands(ssh_client, NON_INTERACTIVE_COMMANDS)
 
-        execute_interactive_commands(ssh_client, INTERACTIVE_COMMANDS, PASSWORD)
+        execute_interactive_commands(
+            ssh_client, INTERACTIVE_COMMANDS, PASSWORD)
 
     except Exception as e:
         print(f"An error occurred: {e}")
